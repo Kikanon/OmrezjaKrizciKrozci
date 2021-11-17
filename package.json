@@ -1,0 +1,22 @@
+{
+  "name": "omrezjakrizcikrozci",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kikanon/OmrezjaKrizciKrozci.git"
+  },
+  "author": "JakobSrumpf",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kikanon/OmrezjaKrizciKrozci/issues"
+  },
+  "homepage": "https://github.com/Kikanon/OmrezjaKrizciKrozci#readme",
+  "dependencies": {
+    "socket.io": "^4.3.2"
+  }
+}

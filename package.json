@@ -2,6 +2,7 @@
   "name": "omrezjakrizcikrozci",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -17,6 +18,9 @@
   },
   "homepage": "https://github.com/Kikanon/OmrezjaKrizciKrozci#readme",
   "dependencies": {
+    "express": "^4.17.1",
+    "fs": "^0.0.1-security",
+    "nodemon": "^2.0.15",
     "socket.io": "^4.3.2"
   }
 }

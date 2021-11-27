@@ -1,5 +1,5 @@
 var peer = new Peer();
-let joinBtn, aiBtn, createBtn;
+let joinBtn, aiBtn, createBtn, alertText;
 var turn = null; // 0 this player, 1 remote
 var player_icon = 'o';
 var conn;
@@ -11,6 +11,7 @@ window.onload = () => {
     joinBtn = document.getElementById('joinButton')
     aiBtn = document.getElementById('aiButton') 
     createBtn = document.getElementById('createButton') 
+    alertText = document.getElementById('alert')
 }
 
 function emit(type, data){
@@ -52,10 +53,12 @@ function checkBoard(){
         }
         turn = 1
         if(winner == player_icon){
-            alert('Yay, ur ass won')
+            alertText.hidden = false
+            alertText.innerHTML = "Bravo Bobi"
         }
         else{
-            alert('Vec srece prihodnjic, krompircek')
+            alertText.hidden = false
+            alertText.innerHTML = "Se vidimo v Mekicu"
         }
     }
 }
@@ -63,11 +66,11 @@ function checkBoard(){
 function move(x){
     if(conn != null && turn == 0 && board_array[x] == '-'){
         turn = 1
-        setState(x, player_icon)
         emit('board', {
             block : x,
             state : player_icon
         })
+        setState(x, player_icon)
     }
         
 }

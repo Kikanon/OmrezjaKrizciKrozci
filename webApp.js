@@ -110,7 +110,7 @@ function setState(block, state){
     return true;
 }
 
-async function aiMatch(){
+function aiMatch(){
     joinBtn.disabled = true
     aiBtn.disabled = true
     createBtn.disabled = true
@@ -136,6 +136,7 @@ function joinRoom(ip = null){
         turn = 0
 
         conn.on('data', (data) => {
+            try{
             console.log('Received', data);
             switch(data.type){
                 case 'board': {
@@ -144,6 +145,9 @@ function joinRoom(ip = null){
                     turn = 0
                 }
             }
+        }catch(e){
+            console.log(e)
+        }
         });
       
         // Send messages
@@ -151,8 +155,10 @@ function joinRoom(ip = null){
         conn.send('Hello!');
       });
     conn.on('error', (e) =>{console.log(e)})
-    conn.on('disconnected', (e) =>{console.log(e)})
-    conn.on('close', (e) => {console.log(`conn closed: ${e}`)})
+    conn.on('close', (e) => {
+        console.log(`conn closed: ${e}`)
+        onDC()
+    })
 }
 
 function createRoom(){
@@ -167,6 +173,7 @@ function createRoom(){
         console.log('Player connecting...')
         
         conn.on('data', (data) => {
+            try{
             console.log('Received', data);
             switch(data.type){
                 case 'board': {
@@ -175,10 +182,15 @@ function createRoom(){
                     turn = 0
                 }
             }
+        }catch(e){
+            console.log(e)
+        }
           });
         conn.on('error', (e) =>{console.log(e)})
-        conn.on('disconnected', (e) =>{console.log(e)})
-        conn.on('close', (e) => {console.log(`conn closed: ${e}`)})
+        conn.on('close', (e) => {
+            console.log(`conn closed: ${e}`)
+            onDC()
+        })
 
         conn.on('open', () =>{
             conn.send('Connection established')
@@ -189,6 +201,11 @@ function createRoom(){
      });
 }
 
+function onDC(){
+    alertText.hidden = false
+    alertText.innerHTML = "Povezava z drugim igralcem je bila prekinjena..."
+}
+
 function makeRandomCode() {
     var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     var result = '';
@@ -197,6 +214,3 @@ function makeRandomCode() {
     }
     return result;
 }
-
-//Delujoča igra proti računalniku (10 točk)
-//Implementirana možnost ustvarjanja nove igre, implementirana možnost pridruževanja k igri in delujoča igra preko omrežja

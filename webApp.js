@@ -6,6 +6,7 @@ var conn;
 var board_array = ['-', '-', '-',
  '-', '-', '-'
  , '-', '-', '-']
+ let aiMode = false; 
 
 window.onload = () => {
     joinBtn = document.getElementById('joinButton')
@@ -38,6 +39,7 @@ function checkBoard(){
 
     if(win != 0){
         let winner = '-'
+        console.log(`Win case ${win}`)
         switch(win){
             case 1: winner = board_array[0]; break;
             case 2: winner = board_array[1]; break;
@@ -60,22 +62,40 @@ function checkBoard(){
             alertText.hidden = false
             alertText.innerHTML = "Se vidimo v Mekicu"
         }
+        return;
     }
+
+    for(x of board_array){
+        if(x=='-')return;
+    }
+
+    alertText.hidden = false
+    alertText.innerHTML = "Ocitno noben ne zna zmagat"
 }
 
 function move(x){
-    if(conn != null && turn == 0 && board_array[x] == '-'){
-        turn = 1
-        emit('board', {
-            block : x,
-            state : player_icon
-        })
+    if( (conn != null || aiMode) && turn == 0 && board_array[x] == '-'){
         setState(x, player_icon)
-    }
+
+        if(aiMode){
+            if(alertText.hidden){ // ce se ni konec
+               while(!setState(Math.floor(Math.random() * 9), player_icon=='x'?'o':'x')){}
+            }
+        }else{
+            turn = 1
+            emit('board', {
+                block : x,
+                state : player_icon
+            })
+        }
         
+        return true;
+    }
+    else return false;
 }
 
 function setState(block, state){
+    if(board_array[block]!='-')return false;
     board_array[block] = state
     checkBoard()
     let image = document.getElementById(block)
@@ -87,15 +107,24 @@ function setState(block, state){
         default:  imgPath = 'images/empty_block.png';
     }
     image.src = imgPath;
+    return true;
 }
 
-function aiMatch(){
-    conn.send('hello Kenobi')
+async function aiMatch(){
+    joinBtn.disabled = true
+    aiBtn.disabled = true
+    createBtn.disabled = true
+
+    aiMode = true;
+
+    let x = Math.floor(Math.random() * 9)
+    setState(x, player_icon=='x'?'o':'x')
+    turn = 0
 }
 
 function joinRoom(ip = null){
     if(ip == null)
-        ip = prompt('Type in IP and port')
+        ip = prompt('Type in ID of room')
     conn = peer.connect(ip)
 
     conn.on('open', () => {
@@ -125,8 +154,6 @@ function joinRoom(ip = null){
     conn.on('disconnected', (e) =>{console.log(e)})
     conn.on('close', (e) => {console.log(`conn closed: ${e}`)})
 }
-
-
 
 function createRoom(){
     joinBtn.disabled = true

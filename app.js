@@ -19,7 +19,6 @@ app.get('/webApp.js', (req, res) => {
     res.sendFile(process.cwd() + '/webApp.js');
 });
 
-
 app.get('/images/*.png', (req, res) => {
     res.sendFile(process.cwd() + req.path)
 })

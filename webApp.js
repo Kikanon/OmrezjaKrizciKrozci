@@ -3,9 +3,7 @@ let joinBtn, aiBtn, createBtn, alertText;
 var turn = null; // 0 this player, 1 remote
 var player_icon = 'o';
 var conn;
-var board_array = ['-', '-', '-',
- '-', '-', '-'
- , '-', '-', '-']
+var board_array = ['-', '-', '-', '-', '-', '-', '-', '-', '-']
  let aiMode = false; 
 
 window.onload = () => {

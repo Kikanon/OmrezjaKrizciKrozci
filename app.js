@@ -1,7 +1,7 @@
 import express from 'express';
 import { createServer } from 'http';
-import { Server } from 'socket.io';
-import fs from 'fs'
+// import { Server } from 'socket.io';
+// import fs from 'fs'
 
 const app = express();
 const server = createServer(app);
@@ -24,5 +24,5 @@ app.get('/images/*.png', (req, res) => {
 })
 
 server.listen(port, () => {
-  console.log('webpage listening on *:3000');
+  console.log(`webpage listening on localhost:${port}`);
 });
